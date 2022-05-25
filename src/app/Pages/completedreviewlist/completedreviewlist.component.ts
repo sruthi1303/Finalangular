@@ -9,6 +9,9 @@ import { ReviewService } from 'src/app/service/review.service';
 })
 export class completedreviewlistComponent implements OnInit {
 
+  switchValue = 3;
+
+
   constructor(private reviewService: ReviewService){}
   data: any
   ngOnInit(): void {
@@ -16,7 +19,7 @@ export class completedreviewlistComponent implements OnInit {
 
   }
   GetReviewByStatus(){
-    this.reviewService.getReviewByStatus(1).subscribe(res => {
+    this.reviewService.getReviewByStatus(3).subscribe(res => {
       console.log(res)
       this.data = res
     })

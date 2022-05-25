@@ -7,7 +7,6 @@ import { ReviewService } from '../../service/review.service';
   styleUrls: ['./scheduledreview.component.css']
 })
 export class ScheduledreviewComponent implements OnInit {
-  ReviewDTO: any;
   Department:any;
   User:any;
   Users:any;
@@ -17,15 +16,17 @@ export class ScheduledreviewComponent implements OnInit {
 
 
 
+
   constructor(private rs:ReviewService) { }
   
   StatusId=1;
- 
+  selectDept:any=0;
+  reviewId:any=0;
 
   Review:any={
     id: 0,
     reviewerId: 0,
-    statusId: 0,
+    statusId: 3,
     traineeId: 0,
     reviewDate: Date.now,
     reviewTime:0,
@@ -40,26 +41,26 @@ export class ScheduledreviewComponent implements OnInit {
     this.getAllDepartments();
     this.getAllReviewer();
      this.getAllUser();
-     this.setoption();
-    
-     
-  }
+      this.setoption();
+    }
+
   setoption(){
     if(this.Review.id!=null){
       this.getAllReview();
     }
   }
+
   OnSubmit() {
-    if(this.Review.id!=null){
+     if(this.Review.id==0){
       console.log(this.Review)
-    this.rs.putReview(this.Review).subscribe((res: any) => {
+    this.rs.postReview(this.Review).subscribe((res: any) => {
       console.log(res);
       this.Review(res);
     })
     }
     else{
       console.log(this.Review)
-      this.rs.postReview(this.Review).subscribe((res: any) => {
+      this.rs.putReview(this.Review).subscribe((res: any) => {
         console.log(res);
         this.Review(res);
       })
@@ -67,7 +68,7 @@ export class ScheduledreviewComponent implements OnInit {
     
   }
   getAllReview(){
-    this.rs.getReviewById(10).subscribe(a=>{
+    this.rs.getReviewById(1).subscribe(a=>{
       console.log(a)
       this.Review = a
     })
@@ -79,13 +80,13 @@ export class ScheduledreviewComponent implements OnInit {
     })
   }
   getAllReviewer(){
-    this.rs.getAllReviewer(1).subscribe(a=>{
+    this.rs.getAllReviewer(5).subscribe(a=>{
       console.log(a)
       this.User = a
     })
   }
   getAllUser(){
-    this.rs.getAllUser(1,2).subscribe(a=>{
+    this.rs.getAllUser(this.selectDept,4).subscribe(a=>{
       console.log(a)
       this.Users = a
     })

@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Department } from '../Models/department';
-import { ReviewDTO } from '../Models/ReviewDTO';
 import { User } from '../Models/user';
 
 
@@ -10,50 +9,49 @@ import { User } from '../Models/user';
   providedIn: 'root'
 })
 export class ReviewService {
+  getalltrainee(arg0: number) {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private http: HttpClient) { }
-  // https://localhost:7161/Review/GetReviewById/12
 
-  baseurl = "https://localhost:7161/Review/"
-  getReviewById(id: number): Observable<ReviewDTO[]> {
-    return this.http.get<ReviewDTO[]>(this.baseurl + `GetReviewById/${id}`)
-    
-}
-getReviewByStatus(statusId: number): Observable<ReviewDTO[]> {
-  return this.http.get<ReviewDTO[]>(this.baseurl + `GetReviewByStatus/${statusId}`)
+  baseurl = "https://localhost:5001/Review"
   
-}
+  getReviewById(id: number): Observable<any> {
+    return this.http.get<any>(`https://localhost:5001/Review/${id}`)
+    }
+
+
 getAllDepartments(){
-  let baseurl = "https://localhost:7161/api/Department/GetAllDepartments"
+  let baseurl = "https://localhost:5001/Departments"
   return this.http.get(baseurl) 
 }
-getAllReviewer(id: number): Observable<User[]>{
-  let baseurl="https://localhost:7161/User/"
-  return this.http.get<User[]>(baseurl+`GetUsersByRole/${id}`)
+
+getReviewByStatus(statusId:number): Observable<any>{
+  let baseurl="https://localhost:5001/Review/"
+  return this.http.get(baseurl+`Status/${statusId}`)
 }
 
-getAllUser(did: number,rid:number): Observable<User[]>{
-  let baseurl="https://localhost:7161/User/"
-  return this.http.get<User[]>(baseurl+`GetUsersByDeptandrole/${did},${rid}`)
+getAllReviewer(id: number): Observable<any>{
+  let baseurl="https://localhost:5001/User/"
+  return this.http.get<any>(baseurl+`Role/${id}`)
 }
-// getAllUsers(){
-//   let baseurl = "https://localhost:7161/User/GetUsersByRole/1"
-//   return this.http.get(baseurl) 
-// }
 
-
+getAllUser(did: number,rid:number): Observable<any>{
+  let baseurl="https://localhost:5001/User/"
+  return this.http.get<any>(baseurl+`GetUsersByDepartmentAndRole/${did},${rid}`)
+}
 
 postReview(data:any): Observable<any> {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json; charset=utf-8');
-  return this.http.post<any>(this.baseurl + 'Create', data)
+  return this.http.post<any>('https://localhost:5001/Review', data)
 }
-
 
 putReview(data:any): Observable<any> {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json; charset=utf-8');
-  return this.http.put<any>(this.baseurl + 'Update', data)
+  return this.http.put<any>('https://localhost:5001/Update', data)
 }
 
 
